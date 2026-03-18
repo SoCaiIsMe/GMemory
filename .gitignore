@@ -1,0 +1,5 @@
+/tasks/*cache*
+/tasks/envs
+/tasks/*workflow*
+/tasks/prompts
+/mas/*/
