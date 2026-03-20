@@ -3,3 +3,4 @@
 /tasks/*workflow*
 /tasks/prompts
 /mas/*/
+.env
