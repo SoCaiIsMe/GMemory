@@ -14,36 +14,35 @@ from ..base_env import BaseEnv, BaseRecorder
 
 def get_all_environment_configs(game_names: list[str], label_path: str):
     def load_annotation(path):
-        all_annotations = None  
+        all_annotations = []
         difficulty = []
         with open(path, 'r') as f:
             for line in f:
                 if line.strip() == '':
                     continue
-                line = json.loads(line.strip())
-                if "difficulty" in line:
-                    difficulty.append(line["difficulty"])
+                line_data = json.loads(line.strip())
+                all_annotations.append(line_data)
+                if "difficulty" in line_data:
+                    difficulty.append(line_data["difficulty"])
                 else:
                     raise ValueError("No difficulty in annotation file")
         return all_annotations, difficulty
     
-    Num_Problems = {
-        "barman":20, "blockworld":10,"gripper":20, "tyreworld":10
-    }
     env_configs = []
-    iter_num = 0
-    _, difficulties = load_annotation(label_path)
+    all_annotations, difficulties = load_annotation(label_path)
     
-    for game_name in game_names:
-        num_problems = Num_Problems[game_name]
-        for i in range(num_problems):
+    for i, annotation in enumerate(all_annotations):
+        # 从additional_info中获取游戏名称，如果没有则默认为gripper
+        game_name = annotation.get("additional_info", {}).get("subtask", "gripper")
+        
+        # 如果游戏名称在game_names列表中，则添加到环境配置
+        if game_name in game_names:
             env_configs.append({
                 "game_name": game_name,
                 "problem_index": i,
-                "difficulty": difficulties[iter_num]
+                "difficulty": difficulties[i],
+                "annotation": annotation
             })
-            
-            iter_num += 1
     
     return env_configs
     

@@ -4,3 +4,4 @@
 /tasks/prompts
 /mas/*/
 .env
+.db/
