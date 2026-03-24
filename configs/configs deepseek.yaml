@@ -1,9 +1,9 @@
 llm_config:
-  model_name: "Qwen/Qwen2.5-7B-Instruct"
+  model_name: "deepseek-ai/DeepSeek-V3.2"
   max_token: 512
   temperature: 0.1
   num_comps: 1
-  llm_type: "vllm"  # openai, vllm, huggingface
+  llm_type: "openai"  # openai, vllm, huggingface
 
 vllm_config:
   server_url: "http://localhost:8000"

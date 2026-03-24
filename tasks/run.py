@@ -14,7 +14,7 @@ from mas.agents import Agent
 from mas.module_map import module_map
 from mas.reasoning import ReasoningBase
 from mas.memory import MASMemoryBase
-from mas.llm import LLMCallable, GPTChat, get_price
+from mas.llm import LLMCallable, GPTChat, get_llm_model, get_price
 from mas.mas import MetaMAS
 from mas.utils import EmbeddingFunc
 
@@ -74,7 +74,8 @@ def build_mas(
     embed_func = EmbeddingFunc(CONFIG.get('embedding_model', "sentence-transformers/all-MiniLM-L6-v2")) 
     reasoning_module_type, mas_memory_module_type = module_map(reasoning, mas_memory)
 
-    llm_model: LLMCallable = GPTChat(model_name=llm_type)
+    # 使用 LLM 工厂函数创建模型实例
+    llm_model: LLMCallable = get_llm_model(model_name=llm_type)
     reasoning_module: ReasoningBase = reasoning_module_type(llm_model=llm_model)
     mas_memory_module: MASMemoryBase = mas_memory_module_type(
         namespace=mas_memory,
